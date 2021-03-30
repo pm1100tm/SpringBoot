@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.springboot.springbootexam.repository.BoardRepository">
+    
+    <select id="getList" parameterType="com.springboot.springbootexam.domain.Board" resultType="com.springboot.springbootexam.domain.Board">
+        SELECT
+            BOARD_SEQUENCE,
+            TITLE,
+            CONTENTS,
+            CREATED_AT,
+            UPDATED_AT
+        FROM
+            BOARD
+        ORDER BY UPDATED_AT DESC
+    </select>
+
+    <select id="get" parameterType="int" resultType="com.springboot.springbootexam.domain.Board">
+        SELECT
+            BOARD_SEQUENCE,
+            TITLE,
+            CONTENTS,
+            CREATED_AT,
+            UPDATED_AT
+        FROM
+            BOARD
+        WHERE
+            BOARD_SEQUENCE = #{BOARD_SEQUENCE}
+    </select>
+
+    <insert id="save" parameterType="com.springboot.springbootexam.domain.Board">
+        INSERT INTO BOARD
+        (
+            TITLE,
+            CONTENTS,
+            CREATED_AT,
+            UPDATED_AT
+        )
+        VALUES
+        (
+            #{title},
+            #{contents},
+            NOW(),
+            NOW()
+        )
+    </insert>
+
+    <update id="update" parameterType="com.springboot.springbootexam.domain.Board">
+        UPDATE BOARD
+        SET
+            TITLE = #{title}
+          ,CONTENTS = #{contents}
+          ,UPDATED_AT = NOW()
+        WHERE
+            BOARD_SEQUENCE = #{BOARD_SEQUENCE}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM BOARD
+        WHERE BOARD_SEQUENCE = #{BOARD_SEQUENCE}
+    </delete>
+</mapper>

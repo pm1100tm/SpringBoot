@@ -16,7 +16,7 @@ public interface BoardRepository {
     
     Board get(int boardSequence);
     
-    void save(Board board);
+    int save(Board board);
     
     void update(Board board);
     

@@ -41,11 +41,13 @@ public class BoardService {
      * @param board
      * @return -
      * */
-    public void save (Board board) {
+    public int save (Board board) {
         Board getBoard = boardRepository.get(board.getBoardSequence());
         if (getBoard == null) {
             boardRepository.save(board);
+            return 1;
         }
+        return 0;
     }
     
     /** 게시판 글 수정 
@@ -53,11 +55,13 @@ public class BoardService {
      * @param board
      * @return -
      * */
-    public void update (Board board) {
+    public int update (Board board) {
         Board getBoard = boardRepository.get(board.getBoardSequence());
         if (getBoard != null) {
             boardRepository.update(board);
-        }
+            return 1;
+        } 
+        return 0;
     }
     
     /** 게시판 글 삭제

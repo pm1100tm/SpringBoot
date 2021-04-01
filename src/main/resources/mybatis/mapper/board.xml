@@ -25,7 +25,7 @@
         FROM
             BOARD
         WHERE
-            BOARD_SEQUENCE = #{BOARD_SEQUENCE}
+            BOARD_SEQUENCE = #{boardSequence}
     </select>
 
     <insert id="save" parameterType="com.springboot.springbootexam.domain.Board">
@@ -52,11 +52,11 @@
           ,CONTENTS = #{contents}
           ,UPDATED_AT = NOW()
         WHERE
-            BOARD_SEQUENCE = #{BOARD_SEQUENCE}
+            BOARD_SEQUENCE = #{boardSequence}
     </update>
 
     <delete id="delete" parameterType="int">
         DELETE FROM BOARD
-        WHERE BOARD_SEQUENCE = #{BOARD_SEQUENCE}
+        WHERE BOARD_SEQUENCE = #{boardSequence}
     </delete>
 </mapper>

@@ -1,5 +1,6 @@
 package com.springboot.springbootexam.controller;
 
+import com.springboot.springbootexam.configuration.http.BaseResponse;
 import com.springboot.springbootexam.domain.Board;
 import com.springboot.springbootexam.service.BoardService;
 import io.swagger.annotations.Api;
@@ -31,10 +32,10 @@ public class BoardController {
      */
     @GetMapping("/list")
     @ApiOperation(value = "게시판 목록 취득", notes = "페이지 번호에 해당하는 게시판 글 목록을 취득합니다.")
-    public List<Board> getList () {
-        return boardService.getList();
+    public BaseResponse<List<Board>> getList () {
+        return new BaseResponse<List<Board>>(boardService.getList());
     }
-
+    
     /**
      * 게시판 글 취득
      * @param boardSequence
@@ -43,8 +44,8 @@ public class BoardController {
     @GetMapping("/{boardSequence}")
     @ApiOperation(value = "게시판 글 상세 조회", notes = "해당 게시글 내용의 상세 정보를 조회합니다.")
     @ApiImplicitParams({@ApiImplicitParam(name = "boardSequence", value = "게시판 글 번호", example = "1")})
-    public Board get (@PathVariable int boardSequence) {
-        return boardService.get(boardSequence);
+    public BaseResponse<Board> get (@PathVariable int boardSequence) {
+        return new BaseResponse<Board>(boardService.get(boardSequence));
     }
     
     /**
@@ -58,8 +59,8 @@ public class BoardController {
             @ApiImplicitParam(name = "title", value = "게시판 글 제목", example = "게시판 제목입니다."),
             @ApiImplicitParam(name = "contents", value = "게시판 글 내용", example = "게시판 내용입니다.")
     })
-    public void save (Board board) {
-        boardService.save(board);
+    public BaseResponse<Integer> save (Board board) {
+        return new BaseResponse<Integer>(boardService.save(board));
     }
     
     /**
@@ -67,11 +68,11 @@ public class BoardController {
      * @param board
      * @return -
      */
-    @GetMapping("/update")
+    @PutMapping("/update")
     @ApiOperation(value = "게시판 글 수정", notes = "게시판 글 수정")
     @ApiImplicitParams({@ApiImplicitParam(name = "board", value = "게시판 글 컨텐츠")})
-    public void update (Board board) {
-        boardService.update(board);
+    public BaseResponse<Integer> update (Board board) {
+        return new BaseResponse<Integer>(boardService.update(board));
     }
 
     /**
@@ -79,10 +80,10 @@ public class BoardController {
      * @param boardSequence
      * @return -
      */
-    @GetMapping("/delete/{boardSequence}")
+    @DeleteMapping("/delete/{boardSequence}")
     @ApiOperation(value = "게시판 글 삭제", notes = "게시판 글을 삭제합니다.")
     @ApiImplicitParams({@ApiImplicitParam(name = "boardSequence", value = "게시판 글 번호", example = "1")})
-    public void delete (@PathVariable int boardSequence) {
-        boardService.delete(boardSequence);
+    public BaseResponse<Boolean> delete (@PathVariable int boardSequence) {
+        return new BaseResponse<Boolean>(boardService.delete(boardSequence));
     }
 }

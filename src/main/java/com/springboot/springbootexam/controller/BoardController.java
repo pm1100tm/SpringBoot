@@ -1,6 +1,8 @@
 package com.springboot.springbootexam.controller;
 
+import com.springboot.springbootexam.configuration.exception.BaseException;
 import com.springboot.springbootexam.configuration.http.BaseResponse;
+import com.springboot.springbootexam.configuration.http.BaseResponseCode;
 import com.springboot.springbootexam.domain.Board;
 import com.springboot.springbootexam.service.BoardService;
 import io.swagger.annotations.Api;
@@ -8,6 +10,8 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,7 +49,12 @@ public class BoardController {
     @ApiOperation(value = "게시판 글 상세 조회", notes = "해당 게시글 내용의 상세 정보를 조회합니다.")
     @ApiImplicitParams({@ApiImplicitParam(name = "boardSequence", value = "게시판 글 번호", example = "1")})
     public BaseResponse<Board> get (@PathVariable int boardSequence) {
-        return new BaseResponse<Board>(boardService.get(boardSequence));
+        Board board = boardService.get(boardSequence);
+        if (board == null) {
+            throw new BaseException(BaseResponseCode.DATA_IS_NULL, new String[] {"게시물"});
+        }
+        
+        return new BaseResponse<>(board);
     }
     
     /**
@@ -60,7 +69,18 @@ public class BoardController {
             @ApiImplicitParam(name = "contents", value = "게시판 글 내용", example = "게시판 내용입니다.")
     })
     public BaseResponse<Integer> save (Board board) {
-        return new BaseResponse<Integer>(boardService.save(board));
+        // 제목 필수 체크
+        if (!StringUtils.hasText((board.getTitle()))) {
+            System.out.println("=================================");
+            throw new BaseException(BaseResponseCode.VALIDATE_REQUIRED, new String[] {"title", "제목"});
+        }
+        // 내용 필수 체크
+        if (!StringUtils.hasText(board.getContents())) {
+            System.out.println("=================================");
+            throw new BaseException(BaseResponseCode.VALIDATE_REQUIRED, new String[] {"contents", "내용물"});
+        }
+        
+        return new BaseResponse<>(boardService.save(board));
     }
     
     /**

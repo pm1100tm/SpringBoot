@@ -59,4 +59,24 @@
         DELETE FROM BOARD
         WHERE BOARD_SEQUENCE = #{boardSequence}
     </delete>
+    
+    <insert id="saveList" parameterType="map">
+        INSERT INTO BOARD
+        (
+            TITLE,
+            CONTENTS,
+            CREATED_AT,
+            UPDATED_AT
+        )
+        VALUES
+        <foreach collection="boardList" item="board" separator=",">
+        (
+            #{title},
+            #{contents},
+            NOW(),
+            NOW()
+        )
+        </foreach>
+    </insert>
+    
 </mapper>

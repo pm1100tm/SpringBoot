@@ -9,8 +9,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,7 @@ import java.util.List;
 @RequestMapping("/board")
 @Api(tags = "게시판 API")
 public class BoardController {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass()); 
     
     @Autowired
     private BoardService boardService;
@@ -37,6 +39,7 @@ public class BoardController {
     @GetMapping("/list")
     @ApiOperation(value = "게시판 목록 취득", notes = "페이지 번호에 해당하는 게시판 글 목록을 취득합니다.")
     public BaseResponse<List<Board>> getList () {
+        logger.info("getList");
         return new BaseResponse<List<Board>>(boardService.getList());
     }
     

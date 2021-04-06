@@ -3,9 +3,12 @@ package com.springboot.springbootexam.service;
 import com.springboot.springbootexam.domain.Board;
 import com.springboot.springbootexam.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /** 게시판 서비스 
  * @author swd
@@ -76,5 +79,17 @@ public class BoardService {
         }
         boardRepository.delete(boardSequence);
         return true;
+    }
+    
+    public void saveList1(List<Board> list) {
+        for (Board board : list) {
+            boardRepository.save(board);
+        }
+    }
+    
+    public void saveList2(List<Board> boardList) {
+        Map<String, Object> boardMap = new HashMap<String, Object>();
+        boardMap.put("boardList", boardList);
+        boardRepository.saveList(boardMap);
     }
 }

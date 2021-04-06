@@ -4,6 +4,8 @@ import com.springboot.springbootexam.domain.Board;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /** 게시판 레포지토리 
  * @author swd
@@ -21,4 +23,6 @@ public interface BoardRepository {
     void update(Board board);
     
     boolean delete(int boardSequence);
+    
+    void saveList(Map<String, Object> paramMap);
 }

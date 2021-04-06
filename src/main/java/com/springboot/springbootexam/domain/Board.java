@@ -10,4 +10,12 @@ public class Board {
     private String createdAt;
     private String updatedAt;
     private boolean isDeleted;
+
+    public Board () {
+    }
+
+    public Board (String title, String contents) {
+        this.title = title;
+        this.contents = contents;
+    }
 }

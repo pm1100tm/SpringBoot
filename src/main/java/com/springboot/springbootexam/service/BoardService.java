@@ -1,9 +1,10 @@
 package com.springboot.springbootexam.service;
 
+import ch.qos.logback.classic.Logger;
 import com.springboot.springbootexam.domain.Board;
 import com.springboot.springbootexam.repository.BoardRepository;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -81,13 +82,16 @@ public class BoardService {
         return true;
     }
     
-    public void saveList1(List<Board> list) {
-        for (Board board : list) {
+    public boolean saveList1(List<Board> boardList) {
+        System.out.println("==================Service:: saveList1");
+        for (Board board : boardList) {
             boardRepository.save(board);
         }
+        return true;
     }
     
     public void saveList2(List<Board> boardList) {
+        System.out.println("==================Service:: saveList2");
         Map<String, Object> boardMap = new HashMap<String, Object>();
         boardMap.put("boardList", boardList);
         boardRepository.saveList(boardMap);

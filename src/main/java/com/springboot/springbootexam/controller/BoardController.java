@@ -9,12 +9,15 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import net.bytebuddy.utility.RandomString;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /** 게시판 컨트롤러 
@@ -97,7 +100,7 @@ public class BoardController {
     public BaseResponse<Integer> update (Board board) {
         return new BaseResponse<Integer>(boardService.update(board));
     }
-
+    
     /**
      * 게시판 글 삭제
      * @param boardSequence
@@ -107,6 +110,65 @@ public class BoardController {
     @ApiOperation(value = "게시판 글 삭제", notes = "게시판 글을 삭제합니다.")
     @ApiImplicitParams({@ApiImplicitParam(name = "boardSequence", value = "게시판 글 번호", example = "1")})
     public BaseResponse<Boolean> delete (@PathVariable int boardSequence) {
-        return new BaseResponse<Boolean>(boardService.delete(boardSequence));
+        return new BaseResponse<>(boardService.delete(boardSequence));
+    }
+    
+    /**
+     * 게시판 글 삭제
+     * @param -
+     * @return BaseResponse<Boolean>
+     */
+    @ApiOperation(value = "대용량 등록처리 1", notes = "게시물 10000건 등록 처리 1")
+    @PostMapping("/saveList1")
+    public BaseResponse<Boolean> saveListOne() {
+        logger.info("====================================Controller:: saveList1");
+        List<Board> boardList = new ArrayList<>();
+        int count = 0;
+        while (count < 10000) {
+            String title = RandomStringUtils.randomAlphabetic(10);
+            String contents = RandomStringUtils.randomAlphabetic(10);
+            Board board = new Board(title, contents);
+            boardList.add(board);
+            if (count > 10000) {
+                break;
+            }
+            count++;
+        }
+        
+        long start = System.currentTimeMillis();
+        boardService.saveList1(boardList);
+        long end = System.currentTimeMillis();
+        logger.info("실행 시간:: {}", (end - start) / 1000.0);
+        
+        return new BaseResponse<Boolean>(true);
+    }
+    
+    /**
+     * 게시판 글 삭제
+     * @param -
+     * @return BaseResponse<Boolean>
+     */
+    @ApiOperation(value = "대용량 등록처리 2", notes = "게시물 10000건 등록 처리 2")
+    @PostMapping("/saveList2")
+    public BaseResponse<Boolean> saveListTwo() {
+        List<Board> boardList = new ArrayList<>();
+        int count = 0;
+        while (count < 10000) {
+            String title = RandomStringUtils.randomAlphabetic(10);
+            String contents = RandomStringUtils.randomAlphabetic(10);
+            Board board = new Board(title, contents);
+            boardList.add(board);
+            if (count > 10000) {
+                break;
+            }
+            count++;
+        }
+        
+        long start = System.currentTimeMillis();
+        boardService.saveList2(boardList);
+        long end = System.currentTimeMillis();
+        logger.info("실행 시간:: {}", (end - start) / 1000.0);
+        
+        return new BaseResponse<Boolean>(true);
     }
 }

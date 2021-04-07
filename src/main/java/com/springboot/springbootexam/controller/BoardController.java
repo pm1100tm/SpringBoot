@@ -4,12 +4,12 @@ import com.springboot.springbootexam.configuration.exception.BaseException;
 import com.springboot.springbootexam.configuration.http.BaseResponse;
 import com.springboot.springbootexam.configuration.http.BaseResponseCode;
 import com.springboot.springbootexam.domain.Board;
+import com.springboot.springbootexam.domain.BoardType;
 import com.springboot.springbootexam.service.BoardService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import net.bytebuddy.utility.RandomString;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,6 +71,7 @@ public class BoardController {
     @PostMapping("")
     @ApiOperation(value = "게시판 글 생성", notes = "게시판 글을 생성합니다.")
     @ApiImplicitParams({
+            @ApiImplicitParam(name = "boardType", value = "공지사항", example = "공지사항"),
             @ApiImplicitParam(name = "title", value = "게시판 글 제목", example = "게시판 제목입니다."),
             @ApiImplicitParam(name = "contents", value = "게시판 글 내용", example = "게시판 내용입니다.")
     })
@@ -85,6 +86,7 @@ public class BoardController {
             System.out.println("=================================");
             throw new BaseException(BaseResponseCode.VALIDATE_REQUIRED, new String[] {"contents", "내용물"});
         }
+        logger.debug("==================board::", board);
         
         return new BaseResponse<>(boardService.save(board));
     }
@@ -127,7 +129,7 @@ public class BoardController {
         while (count < 10000) {
             String title = RandomStringUtils.randomAlphabetic(10);
             String contents = RandomStringUtils.randomAlphabetic(10);
-            Board board = new Board(title, contents);
+            Board board = new Board(BoardType.NOTICE, title, contents);
             boardList.add(board);
             if (count > 10000) {
                 break;
@@ -156,7 +158,7 @@ public class BoardController {
         while (count < 10000) {
             String title = RandomStringUtils.randomAlphabetic(10);
             String contents = RandomStringUtils.randomAlphabetic(10);
-            Board board = new Board(title, contents);
+            Board board = new Board(BoardType.NOTICE, title, contents);
             boardList.add(board);
             if (count > 10000) {
                 break;

@@ -1,8 +1,8 @@
 package com.springboot.springbootexam.service;
 
-import ch.qos.logback.classic.Logger;
 import com.springboot.springbootexam.domain.Board;
 import com.springboot.springbootexam.repository.BoardRepository;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +18,7 @@ import java.util.Map;
  * */
 @Service
 public class BoardService {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     
     @Autowired
     private BoardRepository boardRepository;
@@ -46,12 +47,11 @@ public class BoardService {
      * @return -
      * */
     public int save (Board board) {
-        Board getBoard = boardRepository.get(board.getBoardSequence());
-        if (getBoard == null) {
-            boardRepository.save(board);
-            return 1;
-        }
-        return 0;
+        logger.debug("=========================service:: save");
+        logger.debug(board.toString());
+        
+        int result = boardRepository.save(board);
+        return result;
     }
     
     /** 게시판 글 수정 

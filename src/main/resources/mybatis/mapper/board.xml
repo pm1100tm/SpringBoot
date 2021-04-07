@@ -5,11 +5,12 @@
     
     <select id="getList" parameterType="com.springboot.springbootexam.domain.Board" resultType="com.springboot.springbootexam.domain.Board">
         SELECT
-            BOARD_SEQUENCE,
-            TITLE,
-            CONTENTS,
-            CREATED_AT,
-            UPDATED_AT
+            BOARD_SEQUENCE
+            ,BOARD_TYPE
+            ,TITLE
+            ,CONTENTS
+            ,CREATED_AT
+            ,UPDATED_AT
         FROM
             BOARD
         ORDER BY UPDATED_AT DESC
@@ -17,11 +18,12 @@
 
     <select id="get" parameterType="int" resultType="com.springboot.springbootexam.domain.Board">
         SELECT
-            BOARD_SEQUENCE,
-            TITLE,
-            CONTENTS,
-            CREATED_AT,
-            UPDATED_AT
+            BOARD_SEQUENCE
+            ,BOARD_TYPE
+            ,TITLE
+            ,CONTENTS
+            ,CREATED_AT
+            ,UPDATED_AT
         FROM
             BOARD
         WHERE
@@ -31,17 +33,19 @@
     <insert id="save" parameterType="com.springboot.springbootexam.domain.Board">
         INSERT INTO BOARD
         (
-            TITLE,
-            CONTENTS,
-            CREATED_AT,
-            UPDATED_AT
+            BOARD_TYPE
+            ,TITLE
+            ,CONTENTS
+            ,CREATED_AT
+            ,UPDATED_AT
         )
         VALUES
         (
-            #{title},
-            #{contents},
-            NOW(),
-            NOW()
+            #{boardType.code}   
+            ,#{title}
+            ,#{contents}
+            ,NOW()
+            ,NOW()
         )
     </insert>
 
@@ -63,14 +67,16 @@
     <insert id="saveList" parameterType="map">
         INSERT INTO BOARD
         (
-            TITLE,
-            CONTENTS,
-            CREATED_AT,
-            UPDATED_AT
+            BOARD_TYPE   
+            ,TITLE
+            ,CONTENTS
+            ,CREATED_AT
+            ,UPDATED_AT
         )
         VALUES
         <foreach collection="boardList" item="board" separator=",">
         (
+            #{boardType},   
             #{title},
             #{contents},
             NOW(),
